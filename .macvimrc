@@ -1,5 +1,52 @@
-"================vim基本配置================"
+"===============vim基本配置================"
+let mapleader=" "
+
 set nocompatible
+" coc vim configuration
+" tab to select
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-o> coc#refresh()
+endif
+
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+nnoremap <silent> <leader>d :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+
+set hidden
+set updatetime=100
+set shortmess+=c
+
+nmap <leader>rn <Plug>(coc-rename) 
 " 修改cursor在不同模式下的形状
 let &t_SI = "\e[5 q"
 let &t_EI = "\e[2 q"
@@ -9,19 +56,26 @@ let &t_EI = "\e[2 q"
 call plug#begin('~/.vim/plugged')
 
 " Declare the list of plugins.
+Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+Plug 'christoomey/vim-system-copy'
 Plug 'tpope/vim-sensible'
 Plug 'junegunn/seoul256.vim'
-Plug 'jiangmiao/auto-pairs'
 Plug 'sjl/vitality.vim'
 Plug 'https://github.com/gcmt/wildfire.vim.git'
 Plug 'mg979/vim-visual-multi'
+Plug 'liuchengxu/space-vim-theme'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'jiangmiao/auto-pairs'
+Plug 'altercation/vim-colors-solarized'
+" vim-go makes vim so fucking slow
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries'  }
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
 " 配色
-let g:seoul256_background = 234
-colo seoul256
+"let g:seoul256_background = 234 
+"colo seoul256
 
 "leader for wildfire
 nmap <leader><Enter> <Plug>(wildfire-quick-select) 
@@ -173,3 +227,23 @@ endif
 function! HasPaste()
     if &paste
     return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
+
+if (has('nvim'))
+  let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
+endif
+if (has('termguicolors'))
+  set termguicolors
+endif
+
+"colorscheme material 
+
+let g:space_vim_dark_background = 234
+color space-vim-dark
+
+hi Comment guifg=#5C6370 ctermfg=59
+hi Normal     ctermbg=NONE guibg=NONE
+hi LineNr     ctermbg=NONE guibg=NONE
+hi SignColumn ctermbg=NONE guibg=NONE
