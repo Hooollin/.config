@@ -1,0 +1,17 @@
+require("hollin.plugins-setup")
+
+require("hollin.core.options")
+require("hollin.core.keymaps")
+require("hollin.core.colorscheme")
+
+require("hollin.plugins.nvim-tree")
+require("hollin.plugins.lualine")
+require("hollin.plugins.telescope")
+require("hollin.plugins.nvim-cmp")
+require("hollin.plugins.lsp.lspconfig")
+require("hollin.plugins.lsp.mason")
+require("hollin.plugins.lsp.lspsaga")
+require("hollin.plugins.lsp.null-ls")
+require("hollin.plugins.autopairs")
+require("hollin.plugins.treesitter")
+require("hollin.plugins.gitsigns")
